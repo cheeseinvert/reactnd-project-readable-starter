@@ -5,13 +5,15 @@ This is my modified starter template for the final assessment project for Udacit
 
 ## TL;DR
 
-To use my Readable app right away:
+To use my Readable client app right away:
 
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
 ## Important
-The backend API setup instructions [backend server readme](../README.md)
+This client by default expects a server up on localhost:3001. Please start server before starting client.
+
+The backend server API setup instructions [backend server readme](../README.md)
 
 ## Create React App
 
