@@ -10,6 +10,20 @@ import MdEdit from "react-icons/lib/md/edit";
 import MdAdd from "react-icons/lib/md/add";
 import MdClose from "react-icons/lib/md/close";
 
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn
+} from "material-ui/Table";
+
+import IconButton from "material-ui/IconButton";
+import Badge from "material-ui/Badge";
+import ActionInfo from "material-ui/svg-icons/action/info";
+import Subheader from "material-ui/Subheader";
+
 import { timeConverter } from "../utils/helpers";
 import CommentForm from "./CommentForm";
 import * as actions from "../actions";
@@ -44,23 +58,24 @@ class CommentTable extends Component {
 
     return (
       <div className="table-list">
-        <h2 className="table-list-title">
+        <Subheader className="table-list-title">
           Comments ({comments.length})&nbsp;
-          <button
+          <IconButton
+            tooltip="New Comment"
             className="new-item-btn"
             onClick={() => openNewCommentModal()}
           >
             <MdAdd size={20} />
-          </button>
-        </h2>
+          </IconButton>
+        </Subheader>
         {comments.length < 1 || this.state.loading ? (
           <p>No comments show...</p>
         ) : (
-          <table className="data-table">
-            <tbody>
+          <Table className="data-table">
+            <TableBody displayRowCheckbox={false}>
               {comments.map(comment => (
-                <tr key={comment.id} className="table-list-item">
-                  <td className="item-metadata">
+                <TableRow key={comment.id} className="table-list-item">
+                  <TableRowColumn className="item-metadata">
                     <div className="item-timestamp">
                       <label>updated at</label>{" "}
                       {timeConverter(comment.timestamp)}
@@ -68,52 +83,53 @@ class CommentTable extends Component {
                     <div className="item-author">
                       <label>by</label> {comment.author}
                     </div>
-                  </td>
-                  <td className="item-content">
-                    <div className="item-body">{comment.body}</div>
-                  </td>
-                  <td className="item-voting">
-                    (score: {comment.voteScore})
+                  </TableRowColumn>
+                  <TableRowColumn className="item-content">
+                    <Badge badgeContent={comment.voteScore} primary={true}>
+                      <div className="item-body">{comment.body}</div>
+                    </Badge>
+                  </TableRowColumn>
+                  <TableRowColumn className="item-voting">
                     <div className="item-voteScore">
-                      <button
+                      <IconButton
                         className="thumb-up-btn"
                         onClick={() =>
                           doVoteOnComment(comment.id, "upVote", activePost.id)
                         }
                       >
                         <ThumbsUpIcon size={20} />
-                      </button>
-                      <button
+                      </IconButton>
+                      <IconButton
                         className="thumb-down-btn"
                         onClick={() =>
                           doVoteOnComment(comment.id, "downVote", activePost.id)
                         }
                       >
                         <ThumbsDownIcon size={20} />
-                      </button>
-
-                      <button
+                      </IconButton>
+                      <IconButton
                         className="item-edit-btn"
                         onClick={() => {
                           openEditCommentModal(comment);
                         }}
                       >
                         <MdEdit size={20} />
-                      </button>
-                      <button
+                      </IconButton>
+
+                      <IconButton
                         className="post-delete-btn"
                         onClick={() =>
                           doDeleteComment(comment.id, activePost.id)
                         }
                       >
                         <MdDelete size={20} />
-                      </button>
+                      </IconButton>
                     </div>
-                  </td>
-                </tr>
+                  </TableRowColumn>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         )}
         <Modal
           className="modal"
@@ -122,9 +138,6 @@ class CommentTable extends Component {
           onRequestClose={commentModalClose}
           contentLabel="Modal"
         >
-          <button onClick={() => commentModalClose()}>
-            <MdClose size={20} />
-          </button>
           <CommentForm />
         </Modal>
       </div>
@@ -136,13 +149,13 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch);
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ data, control }) {
   return {
-    comments: state.comments,
-    activeSortCriteria: state.activeSortCriteria,
-    activeCategory: state.activeCategory,
-    activePost: state.activePost,
-    isCommentModalOpen: state.isCommentModalOpen
+    comments: data.comments,
+    activeSortCriteria: control.activeSortCriteria,
+    activeCategory: data.activeCategory,
+    activePost: data.activePost,
+    isCommentModalOpen: control.isCommentModalOpen
   };
 }
 

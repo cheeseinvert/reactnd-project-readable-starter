@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -10,12 +10,17 @@ import MdEdit from "react-icons/lib/md/edit";
 import MdClose from "react-icons/lib/md/close";
 import Modal from "react-modal";
 
+import IconButton from "material-ui/IconButton";
+
 import { timeConverter } from "../utils/helpers";
 
 import PostForm from "./PostForm";
 import CommentTable from "./CommentTable";
 import * as actions from "../actions";
 import { bindActionCreators } from "redux";
+
+import TextField from "material-ui/TextField";
+import Subheader from "material-ui/Subheader";
 
 class PostView extends Component {
   static propTypes = {
@@ -39,6 +44,9 @@ class PostView extends Component {
     } = this.props;
     if (!activePost) {
       return <p>loading</p>;
+    } else if (Object.keys(activePost).length === 0) {
+      this.props.history.push(`/NotFound`);
+      return null;
     } else {
       const {
         id,
@@ -53,40 +61,70 @@ class PostView extends Component {
         <div className="outer-view">
           {activePost && (
             <div className="details-view">
-              <h2>Viewing Post {activePost.id}</h2>
+              <Subheader>Viewing Post {activePost.id}</Subheader>
               <div className="details-metadata">
                 <div className="item-timestamp">
-                  <label>created at</label> {timeConverter(timestamp)}
+                  <TextField
+                    floatingLabelText="created at"
+                    value={timeConverter(timestamp)}
+                    disabled={true}
+                  />
                 </div>
                 <div className="item-author">
-                  <label>by</label> {author}
+                  <TextField
+                    floatingLabelText="by"
+                    value={author}
+                    disabled={true}
+                  />
                 </div>
                 <div className="item-category">
-                  <label>category:</label> {category}
+                  <TextField
+                    floatingLabelText="category"
+                    value={category}
+                    disabled={true}
+                  />
                 </div>
               </div>
               <br />
               <div className="details-content">
-                <div className="item-title">{title}</div>
+                <div className="item-title">
+                  <TextField
+                    fullWidth={true}
+                    floatingLabelText="title"
+                    value={title}
+                    disabled={true}
+                  />
+                </div>
                 <br />
-                <div className="item-body">{body}</div>
+                <div className="item-body">
+                  <TextField
+                    fullWidth={true}
+                    multiLine={true}
+                    floatingLabelText="body"
+                    value={body}
+                    disabled={true}
+                  />
+                </div>
                 <br />
               </div>
               <div className="details-voting">
                 <div className="item-voteScore">(score: {voteScore})</div>
-                <button
+                <IconButton
+                  tooltip="vote up"
                   className="thumb-up-btn"
                   onClick={() => doVoteOnPost(id, "upVote")}
                 >
                   <ThumbsUpIcon size={20} />
-                </button>
-                <button
+                </IconButton>
+                <IconButton
+                  tooltip="vote down"
                   className="thumb-down-btn"
                   onClick={() => doVoteOnPost(id, "downVote")}
                 >
                   <ThumbsDownIcon size={20} />
-                </button>
-                <button
+                </IconButton>
+                <IconButton
+                  tooltip="edit"
                   className="item-edit-btn"
                   onClick={() => {
                     console.log("click");
@@ -94,7 +132,7 @@ class PostView extends Component {
                   }}
                 >
                   <MdEdit size={20} />
-                </button>
+                </IconButton>
                 <Link to={`/`} onClick={() => doDeletePost(id)}>
                   <MdDelete size={20} />
                 </Link>
@@ -125,11 +163,13 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch);
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ data, control }) {
   return {
-    activePost: state.activePost,
-    isPostModalOpen: state.isPostModalOpen
+    activePost: data.activePost,
+    isPostModalOpen: control.isPostModalOpen
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostView);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(PostView)
+);

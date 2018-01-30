@@ -2,8 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import MdAdd from "react-icons/lib/md/add";
 import { capitalize } from "../utils/helpers";
-import * as actions from "../actions";
-import { bindActionCreators } from "redux";
+import { doEditPost, doAddNewPost, postModalClose } from "../actions";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import Badge from "material-ui/Badge";
+import Subheader from "material-ui/Subheader";
+
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
 
 class PostForm extends Component {
   constructor(props) {
@@ -52,7 +58,7 @@ class PostForm extends Component {
   }
 
   render() {
-    const { categories, activePost } = this.props;
+    const { categories, activePost, postModalClose } = this.props;
 
     const {
       id,
@@ -67,101 +73,103 @@ class PostForm extends Component {
     const operation = activePost ? "edit" : "new";
     return (
       <div className="outer-form">
-        <h3>{capitalize(operation)} Post</h3>
+        <Subheader>{capitalize(operation)} Post</Subheader>
         <form onSubmit={this.handleSubmit}>
           {id && (
             <div className="form-id">
-              <label>id:</label>&nbsp;{id}
-              <br />
+              <TextField floatingLabelText="id:" value={id} disabled={true} />
             </div>
           )}
           {timestamp && (
             <div className="form-timestamp">
-              <label>timestamp:</label>&nbsp;{timestamp}
-              <br />
+              <TextField
+                floatingLabelText="timestamp:"
+                value={timestamp}
+                disabled={true}
+              />
             </div>
           )}
-          <label>Name:</label>&nbsp;
-          {operation === "edit" ? (
-            author
-          ) : (
-            <input
-              name="author"
-              type="text"
-              value={author}
-              onChange={this.handleInputChange}
-            />
-          )}
+          <TextField
+            floatingLabelText="Name:"
+            name="author"
+            type="text"
+            value={author}
+            onChange={this.handleInputChange}
+            disabled={operation === "edit"}
+          />
           <br />
-          <label>Category:</label>&nbsp;
-          {operation === "edit" ? (
-            category
-          ) : (
-            <select
-              name="category"
-              value={category}
-              onChange={this.handleInputChange}
-            >
-              <option selected hidden>
-                Choose here
-              </option>
-              {categories.map((category, index) => (
-                <option key={index} value={category.path}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          )}
+          <SelectField
+            name="category"
+            value={category}
+            onChange={(event, index, value) => {
+              this.setState({ category: value });
+            }}
+            disabled={operation === "edit"}
+            floatingLabelText="choose category"
+          >
+            {categories.map((category, index) => (
+              <MenuItem primaryText={category.name} value={category.path} />
+            ))}
+          </SelectField>
           <br />
-          <label>Title:</label>
-          <input
+          <TextField
             name="title"
             type="text"
             value={title}
             onChange={this.handleInputChange}
+            floatingLabelText="Title:"
           />
           <br />
-          <label>Body:</label>
-          <textarea
+          <TextField
+            multiLine="true"
             name="body"
             type="textarea"
             value={body}
             onChange={this.handleInputChange}
+            floatingLabelText="Body:"
           />
           <br />
           {voteScore && (
             <div className="form-voteScore">
-              <label>voteScore:</label>&nbsp;{voteScore}
+              <TextField
+                floatingLabelText="voteScore:"
+                value={voteScore}
+                disabled={true}
+              />
               <br />
             </div>
           )}
           {deleted && (
             <div className="form-deleted">
-              <label>deleted:</label>&nbsp;{deleted}
+              <TextField
+                floatingLabelText="deleted:"
+                value={deleted}
+                disabled={true}
+              />
               <br />
             </div>
           )}
-          <button>
-            <MdAdd size={20} />
-          </button>
+          <br />
+          <FlatButton label="Cancel" onClick={postModalClose} />
+          <FlatButton type="submit" label="Submit" keyboardFocused={true} />
         </form>
       </div>
     );
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-function mapStateToProps(state) {
+function mapStateToProps({ data, control }) {
   return {
-    posts: state.posts,
-    activeSortCriteria: state.activeSortCriteria,
-    activePost: state.activePost,
-    isPostModalOpen: state.isPostModalOpen,
-    categories: state.categories
+    posts: data.posts,
+    activeSortCriteria: control.activeSortCriterea,
+    activePost: data.activePost,
+    isPostModalOpen: control.isPostModalOpen,
+    categories: data.categories
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostForm);
+export default connect(mapStateToProps, {
+  doEditPost,
+  doAddNewPost,
+  postModalClose
+})(PostForm);

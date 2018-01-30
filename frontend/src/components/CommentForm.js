@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import MdAdd from "react-icons/lib/md/add";
-import * as actions from "../actions";
+import { doEditComment, doAddNewComment, commentModalClose } from "../actions";
+import TextField from "material-ui/TextField";
+import FlatButton from "material-ui/FlatButton";
+import Badge from "material-ui/Badge";
+import Subheader from "material-ui/Subheader";
 
 class CommentForm extends Component {
   constructor(props) {
@@ -56,7 +59,7 @@ class CommentForm extends Component {
   }
 
   render() {
-    const { activeComment } = this.props;
+    const { activeComment, commentModalClose } = this.props;
     const {
       id,
       parentId,
@@ -69,81 +72,94 @@ class CommentForm extends Component {
     } = this.state;
     return (
       <div className="outer-form">
-        <h3>{activeComment ? "Edit" : "New"} Comment</h3>
+        <Subheader>{activeComment ? "Edit" : "New"} Comment</Subheader>
         <form onSubmit={this.handleSubmit}>
           {id && (
             <div className="form-id">
-              <label>id:</label>&nbsp;{id}
-              <br />
+              <TextField floatingLabelText="id:" value={id} disabled={true} />
             </div>
           )}
           {parentId && (
             <div className="form-parentId">
-              <label>parentId:</label>&nbsp;{parentId}
-              <br />
+              <TextField
+                floatingLabelText="parentId:"
+                value={parentId}
+                disabled={true}
+              />
             </div>
           )}
           {timestamp && (
             <div className="form-imestamp">
-              <label>timestamp:</label>&nbsp;{timestamp}
-              <br />
+              <TextField
+                floatingLabelText="timestamp:"
+                value={timestamp}
+                disabled={true}
+              />
             </div>
           )}
-          <label>Name:</label>&nbsp;
-          <input
+          <TextField
+            floatingLabelText="Name:"
             name="author"
             type="text"
             value={author}
             onChange={this.handleInputChange}
           />
-          <br />
-          <label>Body:</label>&nbsp;
-          <textarea
+          <TextField
+            floatingLabelText="Body:"
+            multiLine="true"
             name="body"
             type="textarea"
             value={body}
             onChange={this.handleInputChange}
           />
-          <br />
           {voteScore && (
             <div className="form-voteScore">
-              <label>voteScore:</label>&nbsp;{voteScore}
-              <br />
+              <TextField
+                floatingLabelText="voteScore:"
+                value={voteScore}
+                disabled={true}
+              />
             </div>
           )}
           {deleted && (
             <div className="form-deleted">
-              <label>deleted:</label>&nbsp;{deleted}
-              <br />
+              <TextField
+                floatingLabelText="deleted:"
+                value={deleted}
+                disabled={true}
+              />
             </div>
           )}
           {parentDeleted && (
             <div className="form-parentId">
-              <label>parentDeleted:</label>&nbsp;{parentDeleted}
-              <br />
+              <TextField
+                floatingLabelText="parentDeleted"
+                value={parentDeleted}
+                diabled={true}
+              />
             </div>
           )}
-          <button>
-            <MdAdd size={20} />
-          </button>
+          <br />
+          <FlatButton label="Cancel" onClick={commentModalClose} />
+          <FlatButton type="submit" label="Submit" keyboardFocused={true} />
         </form>
       </div>
     );
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-function mapStateToProps(state) {
+function mapStateToProps({ data, control }) {
   return {
-    posts: state.posts,
-    activeSortCriteria: state.activeSortCriteria,
-    activeComment: state.activeComment,
-    activePost: state.activePost,
-    isCommentModalOpen: state.isCommentModalOpen
+    posts: data.posts,
+    activeSortCriteria: control.activeSortCriteria,
+    activeComment: data.activeComment,
+    activePost: data.activePost,
+    isCommentModalOpen: control.isCommentModalOpen
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);
+export default connect(mapStateToProps, {
+  doEditComment,
+  doAddNewComment,
+  commentModalClose
+})(CommentForm);

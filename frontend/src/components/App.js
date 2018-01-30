@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import { Link, Route } from "react-router-dom";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import logo from "../logo.svg";
+import logo from "../banner.jpg";
 import "../App.css";
 
 import PostView from "./PostView";
 import PostTable from "./PostTable";
-import * as actions from "../actions";
+import { fetchPosts, selectSortCriteria, fetchCategories } from "../actions";
+import { List, ListItem } from "material-ui/List";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
+
+import Subheader from "material-ui/Subheader";
 
 class App extends Component {
   state = {
@@ -26,43 +30,40 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+            rel="stylesheet"
+          />
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">
-            Welcome to Adam Grant''s Readable Project
-          </h1>
+          <h1 className="App-title">Welcome to Adam Grants Readable Project</h1>
         </header>
-        <p className="App-intro">Click on a category to filter the posts:</p>
-        <ul>
-          <li key={0}>
-            <Link to={`/`} onClick={() => fetchPosts()}>
-              no category filter
-            </Link>
-          </li>
+        <label>category filter:</label>
+        <SelectField
+          value={this.state.selectCategory}
+          onChange={(event, index, value) => {
+            fetchPosts(value);
+            this.setState({ selectCategory: value });
+            this.props.history.push(`/${value}`);
+          }}
+        >
+          <MenuItem primaryText="no category filter" value="" />
           {categories.length > 1 &&
             categories.map((category, index) => (
-              <li key={index + 1}>
-                <Link
-                  to={`/${category.path}`}
-                  onClick={() => fetchPosts(category.name)}
-                >
-                  {category.name}
-                </Link>
-              </li>
+              <MenuItem primaryText={category.name} value={category.path} />
             ))}
-        </ul>
-        <div className="sort-selecter">
-          sort criteria:&nbsp;
-          <select onChange={e => selectSortCriteria(e.target.value)}>
-            <option selected hidden>
-              Choose here
-            </option>
-            {this.state.possibleSortCriteria.map((criteria, index) => (
-              <option key={index} value={criteria}>
-                {criteria}
-              </option>
-            ))}
-          </select>
-        </div>
+        </SelectField>
+        <label>sort priority:</label>
+        <SelectField
+          value={this.state.selectValue}
+          onChange={(event, index, value) => {
+            this.setState({ selectValue: value });
+            selectSortCriteria(value);
+          }}
+        >
+          {this.state.possibleSortCriteria.map((criteria, index) => (
+            <MenuItem primaryText={criteria} value={criteria} />
+          ))}
+        </SelectField>
         <Route
           exact
           path="/"
@@ -84,14 +85,12 @@ class App extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
+function mapStateToProps({ data }) {
+  return { categories: data.categories };
 }
 
-function mapStateToProps(state) {
-  return {
-    categories: state.categories
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, {
+  fetchPosts,
+  fetchCategories,
+  selectSortCriteria
+})(App);

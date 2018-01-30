@@ -1,14 +1,15 @@
 .App {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
+/*  animation: App-logo-spin infinite 20s linear;*/
   height: 80px;
 }
 
 .App-header {
-  background-color: #222;
+  background-color: #14223c;
   height: 150px;
   padding: 20px;
   color: white;
@@ -33,7 +34,7 @@
   white-space: nowrap;
   padding: 10px 15px;
   margin-left: 5%;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
   border-collapse: collapse;
   table-layout: auto;
   width: 90%;
@@ -48,7 +49,7 @@
   width: 600px;
 }
 .item-voting {
-  width: 20%;
+  width: 30%;
 }
 
 .data-table tr {
@@ -63,7 +64,7 @@
 }
 .details-metadata {
 /*	border: 1px solid #ddd;*/
-	 font-family: Tahoma, Geneva, sans-serif;
+	 font-family: 'Roboto', sans-serif;
 }
 .details-content {
 	border: 1px solid #ddd;
