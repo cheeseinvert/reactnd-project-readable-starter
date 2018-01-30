@@ -8,20 +8,16 @@ import ThumbsDownIcon from "react-icons/lib/md/thumb-down";
 import MdDelete from "react-icons/lib/md/delete";
 import MdEdit from "react-icons/lib/md/edit";
 import MdAdd from "react-icons/lib/md/add";
-import MdClose from "react-icons/lib/md/close";
 
 import {
   Table,
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
   TableRow,
   TableRowColumn
 } from "material-ui/Table";
 
 import IconButton from "material-ui/IconButton";
 import Badge from "material-ui/Badge";
-import ActionInfo from "material-ui/svg-icons/action/info";
 import Subheader from "material-ui/Subheader";
 
 import { timeConverter } from "../utils/helpers";

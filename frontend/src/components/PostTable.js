@@ -11,20 +11,16 @@ import MdDelete from "react-icons/lib/md/delete";
 import MdEdit from "react-icons/lib/md/edit";
 import MdInfo from "react-icons/lib/md/info";
 import MdAdd from "react-icons/lib/md/add";
-import MdClose from "react-icons/lib/md/close";
 
 import {
   Table,
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
   TableRow,
   TableRowColumn
 } from "material-ui/Table";
 
 import IconButton from "material-ui/IconButton";
 import Badge from "material-ui/Badge";
-import ActionInfo from "material-ui/svg-icons/action/info";
 import Subheader from "material-ui/Subheader";
 
 import { timeConverter, capitalize } from "../utils/helpers";
@@ -48,16 +44,83 @@ class PostTable extends Component {
     this.setState({ loading: false });
   }
 
+  renderTableRow(post) {
+    const {
+      activeCategory,
+      doVoteOnPost,
+      doDeletePost,
+      openEditPostModal
+    } = this.props;
+    return (
+      <TableRow key={post.id} className="table-list-item">
+        <TableRowColumn className="item-metadata">
+          <div className="item-timestamp">
+            <label>created at</label>&nbsp;{timeConverter(post.timestamp)}
+          </div>
+          <div className="item-author">
+            <label>by</label>
+            {post.author}
+          </div>
+          <div className="item-category">
+            <label>category</label>
+            {post.category}
+          </div>
+          <div className="item-comments">
+            <label>comments</label>
+            {post.commentCount}
+          </div>
+        </TableRowColumn>
+        <TableRowColumn className="item-content">
+          <div className="item-title">{post.title}</div>
+          <div className="item-body">{post.body}</div>
+        </TableRowColumn>
+        <TableRowColumn className="item-voting">
+          <div className="item-voteScore">
+            <Badge badgeContent={post.voteScore} primary={true}>
+              <Link to={`/${post.category}/${post.id}`}>
+                <MdInfo size={20} />
+              </Link>
+            </Badge>
+            <IconButton
+              className="thumb-up-btn"
+              onClick={() => doVoteOnPost(post.id, "upVote", activeCategory)}
+            >
+              <ThumbsUpIcon size={20} />
+            </IconButton>
+            <IconButton
+              className="thumb-down-btn"
+              onClick={() => doVoteOnPost(post.id, "downVote", activeCategory)}
+            >
+              <ThumbsDownIcon size={20} />
+            </IconButton>
+
+            <IconButton
+              className="item-edit-btn"
+              onClick={() => {
+                openEditPostModal(post, activeCategory);
+              }}
+            >
+              <MdEdit size={20} />
+            </IconButton>
+            <IconButton
+              className="post-delete-btn"
+              onClick={() => doDeletePost(post.id, activeCategory)}
+            >
+              <MdDelete size={20} />
+            </IconButton>
+          </div>
+        </TableRowColumn>
+      </TableRow>
+    );
+  }
+
   render() {
     const {
       posts,
       activeCategory,
-      doVoteOnPost,
       activeSortCriteria,
       isPostModalOpen,
-      postModalClose,
-      doDeletePost,
-      openEditPostModal
+      postModalClose
     } = this.props;
     posts.length > 1 && posts.sort(sortBy(activeSortCriteria));
 
@@ -80,64 +143,7 @@ class PostTable extends Component {
         ) : (
           <Table className="data-table">
             <TableBody displayRowCheckbox={false}>
-              {posts.map(post => (
-                <TableRow key={post.id} className="table-list-item">
-                  <TableRowColumn className="item-metadata">
-                    <div className="item-timestamp">
-                      <label>created at</label> {timeConverter(post.timestamp)}
-                    </div>
-                    <div className="item-author">
-                      <label>by</label> {post.author}
-                    </div>
-                    <div className="item-category">
-                      <label>category:</label> {post.category}
-                    </div>
-                    <div className="item-comments">
-                      <label>comments:</label> {post.commentCount}
-                    </div>
-                  </TableRowColumn>
-                  <TableRowColumn className="item-content">
-                    <div className="item-title">{post.title}</div>
-                    <div className="item-body">{post.body}</div>
-                  </TableRowColumn>
-                  <TableRowColumn className="item-voting">
-                    <div className="item-voteScore">
-                      <Badge badgeContent={post.voteScore} primary={true}>
-                        <Link to={`/${post.category}/${post.id}`}>
-                          <MdInfo size={20} />
-                        </Link>
-                      </Badge>
-                      <IconButton
-                        className="thumb-up-btn"
-                        onClick={() => doVoteOnPost(post.id, "upVote")}
-                      >
-                        <ThumbsUpIcon size={20} />
-                      </IconButton>
-                      <IconButton
-                        className="thumb-down-btn"
-                        onClick={() => doVoteOnPost(post.id, "downVote")}
-                      >
-                        <ThumbsDownIcon size={20} />
-                      </IconButton>
-
-                      <IconButton
-                        className="item-edit-btn"
-                        onClick={() => {
-                          openEditPostModal(post);
-                        }}
-                      >
-                        <MdEdit size={20} />
-                      </IconButton>
-                      <IconButton
-                        className="post-delete-btn"
-                        onClick={() => doDeletePost(post.id)}
-                      >
-                        <MdDelete size={20} />
-                      </IconButton>
-                    </div>
-                  </TableRowColumn>
-                </TableRow>
-              ))}
+              {posts.map(post => this.renderTableRow(post))}
             </TableBody>
           </Table>
         )}

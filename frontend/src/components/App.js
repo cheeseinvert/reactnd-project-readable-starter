@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import logo from "../banner.jpg";
 import "../App.css";
@@ -7,11 +7,8 @@ import "../App.css";
 import PostView from "./PostView";
 import PostTable from "./PostTable";
 import { fetchPosts, selectSortCriteria, fetchCategories } from "../actions";
-import { List, ListItem } from "material-ui/List";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
-
-import Subheader from "material-ui/Subheader";
 
 class App extends Component {
   state = {
@@ -37,33 +34,36 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to Adam Grants Readable Project</h1>
         </header>
-        <label>category filter:</label>
-        <SelectField
-          value={this.state.selectCategory}
-          onChange={(event, index, value) => {
-            fetchPosts(value);
-            this.setState({ selectCategory: value });
-            this.props.history.push(`/${value}`);
-          }}
-        >
-          <MenuItem primaryText="no category filter" value="" />
-          {categories.length > 1 &&
-            categories.map((category, index) => (
-              <MenuItem primaryText={category.name} value={category.path} />
+        <div>
+          <label>category filter:</label>
+          <SelectField
+            value={this.state.selectCategory}
+            onChange={(event, index, value) => {
+              fetchPosts(value);
+              this.setState({ selectCategory: value });
+              this.props.history.push(`/${value}`);
+            }}
+          >
+            <MenuItem primaryText="no category filter" value="" />
+            {categories.length > 1 &&
+              categories.map((category, index) => (
+                <MenuItem key={index} primaryText={category.name} value={category.path} />
+              ))}
+          </SelectField>
+
+          <label>sort priority:</label>
+          <SelectField
+            value={this.state.selectValue}
+            onChange={(event, index, value) => {
+              this.setState({ selectValue: value });
+              selectSortCriteria(value);
+            }}
+          >
+            {this.state.possibleSortCriteria.map((criteria, index) => (
+              <MenuItem key={index} primaryText={criteria} value={criteria} />
             ))}
-        </SelectField>
-        <label>sort priority:</label>
-        <SelectField
-          value={this.state.selectValue}
-          onChange={(event, index, value) => {
-            this.setState({ selectValue: value });
-            selectSortCriteria(value);
-          }}
-        >
-          {this.state.possibleSortCriteria.map((criteria, index) => (
-            <MenuItem primaryText={criteria} value={criteria} />
-          ))}
-        </SelectField>
+          </SelectField>
+        </div>
         <Route
           exact
           path="/"

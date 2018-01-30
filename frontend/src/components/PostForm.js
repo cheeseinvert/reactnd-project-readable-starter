@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import MdAdd from "react-icons/lib/md/add";
 import { capitalize } from "../utils/helpers";
 import { doEditPost, doAddNewPost, postModalClose } from "../actions";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
-import Badge from "material-ui/Badge";
 import Subheader from "material-ui/Subheader";
 
 import SelectField from "material-ui/SelectField";
@@ -45,13 +43,19 @@ class PostForm extends Component {
   }
 
   handleSubmit(event) {
-    const { activePost, doEditPost, doAddNewPost, postModalClose } = this.props;
+    const {
+      activePost,
+      doEditPost,
+      doAddNewPost,
+      postModalClose,
+      activeCategory
+    } = this.props;
     const { id, title, body, author, category } = this.state;
 
     if (activePost) {
-      doEditPost(id, title, body);
+      doEditPost(id, title, body, activeCategory);
     } else {
-      doAddNewPost(title, body, author, category);
+      doAddNewPost(title, body, author, category, activeCategory);
     }
     postModalClose();
     event.preventDefault();
@@ -164,7 +168,8 @@ function mapStateToProps({ data, control }) {
     activeSortCriteria: control.activeSortCriterea,
     activePost: data.activePost,
     isPostModalOpen: control.isPostModalOpen,
-    categories: data.categories
+    categories: data.categories,
+    activeCategory: data.activeCategory
   };
 }
 

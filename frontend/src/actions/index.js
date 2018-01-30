@@ -97,9 +97,9 @@ export const fetchCategories = () => dispatch =>
     dispatch(receiveCategories(categories))
   );
 
-export const doVoteOnPost = (id, option) => dispatch =>
+export const doVoteOnPost = (id, option, activeCategory) => dispatch =>
   BackendAPI.voteOnPost(id, option).then(
-    BackendAPI.getAllPosts().then(posts => {
+    BackendAPI.getAllPosts(activeCategory).then(posts => {
       dispatch(fetchPost(id));
       dispatch(receivePosts(posts));
     })
@@ -112,22 +112,32 @@ export const doVoteOnComment = (id, option, parentId) => dispatch =>
     )
   );
 
-export const doAddNewPost = (title, body, author, category) => dispatch =>
+export const doAddNewPost = (
+  title,
+  body,
+  author,
+  category,
+  activeCategory
+) => dispatch =>
   BackendAPI.addNewPost(title, body, author, category).then(
-    BackendAPI.getAllPosts().then(posts => dispatch(receivePosts(posts)))
+    BackendAPI.getAllPosts(activeCategory).then(posts =>
+      dispatch(receivePosts(posts))
+    )
   );
 
-export const doEditPost = (id, title, body) => dispatch =>
+export const doEditPost = (id, title, body, activeCategory) => dispatch =>
   BackendAPI.editPost(id, title, body).then(
-    BackendAPI.getAllPosts().then(posts => {
+    BackendAPI.getAllPosts(activeCategory).then(posts => {
       dispatch(fetchPost(id));
       dispatch(receivePosts(posts));
     })
   );
 
-export const doDeletePost = id => dispatch =>
+export const doDeletePost = (id, activeCategory) => dispatch =>
   BackendAPI.deletePost(id).then(
-    BackendAPI.getAllPosts().then(posts => dispatch(receivePosts(posts)))
+    BackendAPI.getAllPosts(activeCategory).then(posts =>
+      dispatch(receivePosts(posts))
+    )
   );
 
 export const doAddNewComment = (body, author, parentId) => dispatch =>

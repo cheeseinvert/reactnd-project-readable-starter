@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import MdAdd from "react-icons/lib/md/add";
 import { doEditComment, doAddNewComment, commentModalClose } from "../actions";
 import TextField from "material-ui/TextField";
 import FlatButton from "material-ui/FlatButton";
-import Badge from "material-ui/Badge";
 import Subheader from "material-ui/Subheader";
 
 class CommentForm extends Component {
@@ -102,6 +100,7 @@ class CommentForm extends Component {
             name="author"
             type="text"
             value={author}
+            disabled={activeComment}
             onChange={this.handleInputChange}
           />
           <TextField

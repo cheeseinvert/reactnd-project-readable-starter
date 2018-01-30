@@ -2,24 +2,18 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
 import ThumbsUpIcon from "react-icons/lib/md/thumb-up";
 import ThumbsDownIcon from "react-icons/lib/md/thumb-down";
 import MdDelete from "react-icons/lib/md/delete";
 import MdEdit from "react-icons/lib/md/edit";
 import MdClose from "react-icons/lib/md/close";
 import Modal from "react-modal";
-
 import IconButton from "material-ui/IconButton";
-
 import { timeConverter } from "../utils/helpers";
-
 import PostForm from "./PostForm";
 import CommentTable from "./CommentTable";
 import * as actions from "../actions";
 import { bindActionCreators } from "redux";
-
-import TextField from "material-ui/TextField";
 import Subheader from "material-ui/Subheader";
 
 class PostView extends Component {
@@ -64,47 +58,20 @@ class PostView extends Component {
               <Subheader>Viewing Post {activePost.id}</Subheader>
               <div className="details-metadata">
                 <div className="item-timestamp">
-                  <TextField
-                    floatingLabelText="created at"
-                    value={timeConverter(timestamp)}
-                    disabled={true}
-                  />
+                  <label>created at</label>&nbsp;{timeConverter(timestamp)}
                 </div>
                 <div className="item-author">
-                  <TextField
-                    floatingLabelText="by"
-                    value={author}
-                    disabled={true}
-                  />
+                  <label>by</label>&nbsp;{author}
                 </div>
                 <div className="item-category">
-                  <TextField
-                    floatingLabelText="category"
-                    value={category}
-                    disabled={true}
-                  />
+                  <label>category</label>&nbsp;{category}
                 </div>
               </div>
               <br />
               <div className="details-content">
-                <div className="item-title">
-                  <TextField
-                    fullWidth={true}
-                    floatingLabelText="title"
-                    value={title}
-                    disabled={true}
-                  />
-                </div>
+                <div className="item-title">{title}</div>
                 <br />
-                <div className="item-body">
-                  <TextField
-                    fullWidth={true}
-                    multiLine={true}
-                    floatingLabelText="body"
-                    value={body}
-                    disabled={true}
-                  />
-                </div>
+                <div className="item-body">{body}</div>
                 <br />
               </div>
               <div className="details-voting">
