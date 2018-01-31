@@ -9,12 +9,7 @@ import MdDelete from "react-icons/lib/md/delete";
 import MdEdit from "react-icons/lib/md/edit";
 import MdAdd from "react-icons/lib/md/add";
 
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableRowColumn
-} from "material-ui/Table";
+import { Table, TableBody, TableRow, TableRowColumn } from "material-ui/Table";
 
 import IconButton from "material-ui/IconButton";
 import Badge from "material-ui/Badge";

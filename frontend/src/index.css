@@ -30,16 +30,16 @@ body {
   min-width: 100px;
 }*/
 .modal {
-    outline: none;
-    padding: 20px;
-    border-radius: 3px;
-	box-shadow: 0 3px 8px 0 rgba(0,0,0,.24), 0 3px 12px 0 rgba(0,0,0,.12);
-	background: rgb(255, 255, 255);
-	max-width: calc(100% - 100px);
+  outline: none;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.24), 0 3px 12px 0 rgba(0, 0, 0, 0.12);
+  background: rgb(255, 255, 255);
+  max-width: calc(100% - 100px);
   max-height: calc(100% - 100px);
   position: fixed;
-    top: 50%;
-    left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  overflow: auto;
+  overflow: scroll;
 }

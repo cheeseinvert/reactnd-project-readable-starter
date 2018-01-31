@@ -12,12 +12,7 @@ import MdEdit from "react-icons/lib/md/edit";
 import MdInfo from "react-icons/lib/md/info";
 import MdAdd from "react-icons/lib/md/add";
 
-import {
-  Table,
-  TableBody,
-  TableRow,
-  TableRowColumn
-} from "material-ui/Table";
+import { Table, TableBody, TableRow, TableRowColumn } from "material-ui/Table";
 
 import IconButton from "material-ui/IconButton";
 import Badge from "material-ui/Badge";

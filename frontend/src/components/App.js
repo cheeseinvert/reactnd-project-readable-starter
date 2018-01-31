@@ -47,7 +47,11 @@ class App extends Component {
             <MenuItem primaryText="no category filter" value="" />
             {categories.length > 1 &&
               categories.map((category, index) => (
-                <MenuItem key={index} primaryText={category.name} value={category.path} />
+                <MenuItem
+                  key={index}
+                  primaryText={category.name}
+                  value={category.path}
+                />
               ))}
           </SelectField>
 

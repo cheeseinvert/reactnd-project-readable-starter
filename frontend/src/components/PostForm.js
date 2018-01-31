@@ -155,7 +155,7 @@ class PostForm extends Component {
           )}
           <br />
           <FlatButton label="Cancel" onClick={postModalClose} />
-          <FlatButton type="submit" label="Submit" keyboardFocused={true} />
+          <FlatButton type="submit" label="Submit" />
         </form>
       </div>
     );

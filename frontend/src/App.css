@@ -1,10 +1,9 @@
 .App {
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .App-logo {
-/*  animation: App-logo-spin infinite 20s linear;*/
   height: 80px;
 }
 
@@ -23,59 +22,48 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 /* posts table */
 
-.data-table  {
-  white-space: nowrap;
-  padding: 10px 15px;
-  margin-left: 5%;
-  font-family: 'Roboto', sans-serif;
+.data-table {
+  width: 90% !important;
+  margin: 0 5%;
   border-collapse: collapse;
   table-layout: auto;
-  width: 90%;
 }
 .data-table td {
   border: 1px solid #ddd;
+}
+.data-table tr {
+  text-align: left;
+}
+.data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.data-table tr:hover {
+  background-color: #ddd;
 }
 .item-metadata {
   width: 20%;
 }
 .item-contents {
-  width: 600px;
+  width: 60%;
 }
 .item-voting {
-  width: 30%;
-}
-
-.data-table tr {
-  padding: 10px 15px;
-  text-align: left;
+  width: 20%;
 }
 
 .details-view {
-	 text-align: left;
-     width: 50%;
-	 margin-left: 20%;
+  text-align: left;
+  width: 50%;
+  margin-left: 20%;
 }
 .details-metadata {
-/*	border: 1px solid #ddd;*/
-	 font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .details-content {
-	border: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
-.details-voting {
-	/*border*/: 1px solid #ddd;
-}
-
-.data-table tr:nth-child(even){background-color: #f2f2f2;}
-
-.data-table tr:hover {background-color: #ddd;}
 
 .item-title {
   font-weight: bold;
@@ -84,15 +72,6 @@
 label {
   font-weight: bold;
   text-align: top right;
-      display: inline;
-      margin-right:15px;
-}
-
-.outer-form {
-	width: 80%;
-}
-
-textarea {
-  width: 300px;
-  height: 100px;
+  display: inline;
+  margin-right: 15px;
 }

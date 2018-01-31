@@ -103,6 +103,7 @@ class CommentForm extends Component {
             disabled={activeComment}
             onChange={this.handleInputChange}
           />
+          <br />
           <TextField
             floatingLabelText="Body:"
             multiLine="true"
@@ -140,7 +141,7 @@ class CommentForm extends Component {
           )}
           <br />
           <FlatButton label="Cancel" onClick={commentModalClose} />
-          <FlatButton type="submit" label="Submit" keyboardFocused={true} />
+          <FlatButton type="submit" label="Submit" />
         </form>
       </div>
     );

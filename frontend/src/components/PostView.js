@@ -104,22 +104,18 @@ class PostView extends Component {
                   <MdDelete size={20} />
                 </Link>
               </div>
-
-              <CommentTable />
-              <Modal
-                className="modal"
-                overlayClassName="overlay"
-                isOpen={isPostModalOpen}
-                onRequestClose={postModalClose}
-                contentLabel="Modal"
-              >
-                <button onClick={() => postModalClose()}>
-                  <MdClose size={20} />
-                </button>
-                <PostForm />
-              </Modal>
             </div>
           )}
+          <CommentTable />
+          <Modal
+            className="modal"
+            overlayClassName="overlay"
+            isOpen={isPostModalOpen}
+            onRequestClose={postModalClose}
+            contentLabel="Modal"
+          >
+            <PostForm />
+          </Modal>
         </div>
       );
     }
